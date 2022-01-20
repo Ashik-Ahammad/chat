@@ -1,18 +1,26 @@
-import React from 'react';
-import MessengerCustomerChat from 'react-messenger-customer-chat';
+import { ChatEngine } from 'react-chat-engine';
+
+import ChatFeed from './components/ChatFeed';
+import LoginForm from './components/LoginForm';
 import './App.css';
 
-function App() {
+const projectID = 'f52421c8-e742-4e20-8289-909e0461416d';
+
+const App = () => {
+  if (!localStorage.getItem('username')) return <LoginForm />;
+
   return (
-    <div className="App">
-      <h2>Chat with Ashik Ahammad</h2>
-      <MessengerCustomerChat
-                pageId="<1013541382124431>"
-                appId="<649308776273092>"
-                
-            />
-    </div>
+    <ChatEngine
+      height="100vh"
+      projectID={projectID}
+      userName={localStorage.getItem('username')}
+      userSecret={localStorage.getItem('password')}
+      renderChatFeed={(chatAppProps) => <ChatFeed {...chatAppProps} />}
+      onNewMessage={() => new Audio('https://chat-engine-assets.s3.amazonaws.com/click.mp3').play()}
+    />
   );
-}
+};
+
+// infinite scroll, logout, more customizations...
 
 export default App;
